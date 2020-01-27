@@ -7,11 +7,18 @@ class LinkedList:
         res_str = "|"
 
         iterator = self.head
-
         while iterator is not None:
             res_str += "{}|".format(iterator.data)
             iterator = iterator.next
         return res_str
+
+    def length(self):
+        length = 0
+        iterator = self.head
+        while iterator is not None:
+            length += 1
+            iterator = iterator.next
+        return length
 
     def append(self, data):
         """링크드 리스트 추가 연산 메소드"""
@@ -27,10 +34,13 @@ class LinkedList:
         iterator = self.head
         for i in range(index):
             iterator = iterator.next
+            if iterator == None:
+                return None
 
         return iterator
 
     def findData(self, data):
+        iterator = self.head
         while iterator is not None:
             if iterator.data == data:
                 return iterator
@@ -57,6 +67,33 @@ class LinkedList:
             newNode.next = self.head
             self.head = newNode
 
+    def delete(self, index):
+        # index가 범위 밖이면 에러띄우기
+        if index > self.length():
+            raise EOFError
+        delNode = self.get(index)
+        if delNode is self.head:
+            self.pop()
+        elif delNode is self.tail:
+            prevNode = self.get(index - 1)
+            prevNode.next = None
+            self.tail = prevNode
+        else:
+            prevNode = self.get(index - 1)
+            prevNode.next = delNode.next
+        return delNode.data
+
+    def pop(self):
+        if self.length() == 0:
+            return
+            
+        data = self.head.data
+        if self.head is self.tail:
+            self.head = None
+            self.tail = None
+        else:
+            self.head = self.head.next
+        return data
 
 class Node:
     """링크드 리스트의 노드 클래스"""
@@ -78,10 +115,7 @@ linked_list = LinkedList()
 # 여러 데이터를 링크드 리스트 앞에 추가
 linked_list.append(11)
 linked_list.append(7)
-linked_list.append(5)
-linked_list.append(3)
-linked_list.append(2)
 
 print(linked_list)
-linked_list.prepend(310)
+linked_list.pop()
 print(linked_list)
