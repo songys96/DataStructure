@@ -100,6 +100,18 @@ class BinarySearchTree:
                 parent_node.right_child = node_to_delete.left_child
                 node_to_delete.left_child.parent = parent_node
 
+        else:
+            succesor = BinarySearchTree.find_min(node_to_delete.right_child)
+            node_to_delete.data = succesor.data
+            # 기준값 바로 아래 있을경우
+            if succesor.parent.right_child is succesor:
+                succesor.parent.right_child = succesor.right_child
+            # 기본적인 값
+            else:
+                succesor.parent.left_child = succesor.right_child
+            if succesor.right_child is not None:
+                succesor.right_child.parent = succesor.parent
+                
 
 
 
